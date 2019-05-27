@@ -31,6 +31,10 @@ export interface IDraggableListProps {
   /** 行内样式 */
   style?: React.CSSProperties;
   prefixCls?: string;
+  /** time in milliseconds to define when the sorting should start **/ 
+  delay?: number, 
+  /** only delay if user is using touch  **/
+	delayOnTouchOnly?: boolean,
 }
 
 export default class DraggableList extends React.Component<IDraggableListProps, any> {
@@ -46,7 +50,7 @@ export default class DraggableList extends React.Component<IDraggableListProps, 
   _sortableGroupDecorator = (componentBackingInstance) => {
     // check if backing instance not null
     if (componentBackingInstance) {
-      const { animation, onUpdate, prefixCls, ghostClass, chosenClass, dragClass, disabled } = this.props;
+      const { animation, onUpdate, prefixCls, ghostClass, chosenClass, dragClass, disabled, delay, delayOnTouchOnly } = this.props;
       // const ghostClass = ;
       const options = {
         disabled,
@@ -56,6 +60,8 @@ export default class DraggableList extends React.Component<IDraggableListProps, 
         ghostClass: ghostClass || `${prefixCls}-ghost`, // Class name for the drop placeholder
         chosenClass: chosenClass || `${prefixCls}-chosen`,  // Class name for the chosen item
         dragClass: dragClass || `${prefixCls}-drag`,  // Class name for the dragging item
+        delay: delay || 0,
+        delayOnTouchOnly: delayOnTouchOnly || false,
         onUpdate: (evt) => {
           const { newIndex, oldIndex } = evt;
           let updated = this._current;
